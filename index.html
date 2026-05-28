@@ -188,7 +188,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- v16: preload da imagem do hero pra reduzir LCP -->
-<link rel="preload" as="image" href="image.png" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" href="image.webp" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" defer></script>
@@ -1444,7 +1444,7 @@ h2.section-title{font-size:clamp(28px,3.4vw,44px);line-height:1.15}
       </div>
     </div>
     <div class="l-hero-photo" aria-hidden="true">
-      <img src="image.png" alt="" loading="eager" decoding="async" width="640" height="800" onerror="this.style.display='none'"><!-- v18: dims + decoding pra reduzir CLS; onerror: degrada sem quebrar se o asset faltar -->
+      <img src="image.webp" alt="" loading="eager" decoding="async" width="640" height="800" onerror="this.style.display='none'"><!-- v18: dims + decoding pra reduzir CLS; onerror: degrada sem quebrar se o asset faltar -->
     </div>
   </div>
 </section>
@@ -6485,7 +6485,7 @@ function renderFuture(){
 
 function buildPop(d){
   const imgHtml = d.imgs && d.imgs[0] && d.imgs[0].url
-    ? `<div class="pu-img"><img src="${d.imgs[0].url}" alt="${d.nome}" loading="lazy" onerror="this.parentElement.style.background='${d.grad}';this.style.display='none'"></div>`
+    ? `<div class="pu-img"><img src="${d.imgs[0].url}" alt="${d.nome}" loading="lazy" decoding="async" onerror="this.parentElement.style.background='${d.grad}';this.style.display='none'"></div>`
     : `<div class="pu-img pu-img-ph" style="background:${d.grad}">${d.emoji}</div>`;
   return `${imgHtml}<div class="pu-body">
     <div class="pu-name">${d.nome}</div>
@@ -6541,9 +6541,9 @@ function renderLeft(){
     /* v16: escapeHTML em campos do DB que vão pra innerHTML/atributos.
        Defesa em profundidade — DB é curado mas é boa prática. */
     const nm=escapeHTML(d.nome), br=escapeHTML(d.bairro), co=escapeHTML(d.co), vrd=escapeHTML(_currentVerd(d));
-    const mainImg = d.imgs&&d.imgs[0]&&d.imgs[0].url?`<img src="${d.imgs[0].url}" alt="${nm}" class="u-img-fill" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" loading="lazy"><div style="display:none;width:100%;height:100%;background:${d.grad};align-items:center;justify-content:center;font-size:28px">${d.emoji}</div>`:`<div class="cimg-placeholder" style="background:${d.grad}">${d.emoji}</div>`;
-    const sm1 = d.imgs&&d.imgs[1]&&d.imgs[1].url?`<img src="${d.imgs[1].url}" alt="${nm}" class="u-img-fill" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" loading="lazy"><div style="display:none;width:100%;height:100%;background:${d.grad};align-items:center;justify-content:center;font-size:14px">${d.emoji}</div>`:`<div class="cimg-placeholder" style="background:${d.grad};font-size:14px">${d.emoji}</div>`;
-    const sm2 = d.imgs&&d.imgs[2]&&d.imgs[2].url?`<img src="${d.imgs[2].url}" alt="${nm}" class="u-img-fill" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" loading="lazy"><div style="display:none;width:100%;height:100%;background:${d.grad};align-items:center;justify-content:center;font-size:14px">${d.emoji}</div>`:`<div class="cimg-placeholder" style="background:${d.grad};font-size:14px">${d.emoji}</div>`;
+    const mainImg = d.imgs&&d.imgs[0]&&d.imgs[0].url?`<img src="${d.imgs[0].url}" alt="${nm}" class="u-img-fill" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" loading="lazy" decoding="async"><div style="display:none;width:100%;height:100%;background:${d.grad};align-items:center;justify-content:center;font-size:28px">${d.emoji}</div>`:`<div class="cimg-placeholder" style="background:${d.grad}">${d.emoji}</div>`;
+    const sm1 = d.imgs&&d.imgs[1]&&d.imgs[1].url?`<img src="${d.imgs[1].url}" alt="${nm}" class="u-img-fill" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" loading="lazy" decoding="async"><div style="display:none;width:100%;height:100%;background:${d.grad};align-items:center;justify-content:center;font-size:14px">${d.emoji}</div>`:`<div class="cimg-placeholder" style="background:${d.grad};font-size:14px">${d.emoji}</div>`;
+    const sm2 = d.imgs&&d.imgs[2]&&d.imgs[2].url?`<img src="${d.imgs[2].url}" alt="${nm}" class="u-img-fill" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" loading="lazy" decoding="async"><div style="display:none;width:100%;height:100%;background:${d.grad};align-items:center;justify-content:center;font-size:14px">${d.emoji}</div>`:`<div class="cimg-placeholder" style="background:${d.grad};font-size:14px">${d.emoji}</div>`;
     const inCompare = COMPARE.includes(d.id);
     const priceFmt = fmtPrice(d.pm);
     /* v16 fase 4 (6.2): cards do mapa via data-action — id no card e nos filhos clicáveis */
@@ -6775,7 +6775,7 @@ function renderList(){
     const priceFmt=fmtPrice(d.pm);
     /* v16: escapeHTML em campos do DB usados em innerHTML/atributos */
     const nm=escapeHTML(d.nome), br=escapeHTML(d.bairro), co=escapeHTML(d.co), vrd=escapeHTML(_currentVerd(d)), qt=escapeHTML(d.q), verEm=escapeHTML(d.verificado_em||'mai/2026');
-    const imgsHtml=(d.imgs||[]).slice(0,3).map((img,idx)=>`<div style="flex:1;background:${d.grad};overflow:hidden">${img.url?`<img src="${img.url}" alt="${nm}" class="u-img-fill" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px\\'>${d.emoji}</div>'" loading="lazy">`:`<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px">${d.emoji}</div>`}</div>`).join('');
+    const imgsHtml=(d.imgs||[]).slice(0,3).map((img,idx)=>`<div style="flex:1;background:${d.grad};overflow:hidden">${img.url?`<img src="${img.url}" alt="${nm}" class="u-img-fill" decoding="async" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px\\'>${d.emoji}</div>'" loading="lazy">`:`<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:36px">${d.emoji}</div>`}</div>`).join('');
     const fillerImgs=d.imgs&&d.imgs.length<3?Array(3-d.imgs.length).fill(0).map(()=>`<div style="flex:1;background:${d.grad};display:flex;align-items:center;justify-content:center;font-size:36px">${d.emoji}</div>`).join(''):'';
     /* v16 fase 4 (6.2): cards da lista — clique no card abre mapa+detail; botão compare separado */
     return `<div class="lista-card" style="border-left-color:${cor}" data-action="open-detail-from-list" data-id="${d.id}">
